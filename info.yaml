@@ -3,6 +3,7 @@ project:
   wokwi_id:    0
   source_files:
     - jleightcap_top.v
+    - top.v
   top_module: "jleightcap_top"
 
 documentation:

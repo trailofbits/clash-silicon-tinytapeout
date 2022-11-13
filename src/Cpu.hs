@@ -1,7 +1,7 @@
+{-# LANGUAGE DataKinds #-}
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE TemplateHaskell #-}
 {-# LANGUAGE ViewPatterns #-}
-{-# LANGUAGE DataKinds #-}
 
 module Cpu where
 
@@ -22,13 +22,19 @@ type Regfile = Vec 8 Register
 
 type State = (Regfile, Pointer)
 
+cpuLitVal :: State -> Register -> State
+cpuLitVal (rf, ptr) n = (replace ptr n rf, ptr)
+
+cpuLitPtr :: State -> Pointer -> State
+cpuLitPtr (rf, _) p = (rf, p)
+
 cpu :: State -> Instruction -> State
-cpu (rf, ptr) =
+cpu s@(rf, ptr) =
   \case
     -- literal value
-    $(bitPattern "0_nnnnn") -> (replace ptr nnnnn rf, ptr)
+    $(bitPattern "0_nnnnn") -> cpuLitVal s nnnnn
     -- literal pointer
-    $(bitPattern "100ppp") -> (rf, ppp)
+    $(bitPattern "100ppp") -> cpuLitPtr s ppp
     -- if R == 0, then jump to P, else increment pointer
     $(bitPattern "101ppp") -> if r == 0 then (rf, ppp) else (rf, ptr + 1)
     -- add literal value R

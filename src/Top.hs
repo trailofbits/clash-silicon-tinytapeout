@@ -20,4 +20,4 @@ top ::
   ("io_out" ::: Signal System Port)
 top clk rst instr = exposeClockResetEnable (regMachineM instr) clk rst enableGen
 
-makeTopEntityWithName 'top "jleightcap_top"
+makeTopEntityWithName 'top "top"

@@ -1,5 +1,5 @@
 CLASH_SRC = $(wildcard src/*.hs)
-TOP_MODULE = jleightcap_top
+TOP_MODULE = top
 TOP = src/$(TOP_MODULE).v
 
 GHC_FLAGS += -isrc -Wall
@@ -14,7 +14,7 @@ $(TOP): $(CLASH_SRC)
 
 .PHONY: lint
 lint: $(TOP)
-	verilator --lint-only $(VERILATOR_FLAGS) $(TOP)
+	verilator --lint-only $(VERILATOR_FLAGS) $(wildcard src/*.v)
 	hlint $(CLASH_SRC)
 
 .PHONY: test
