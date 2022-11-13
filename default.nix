@@ -12,6 +12,12 @@ let
     clash-lib clash-ghc clash-prelude
   ]);
 
+
+  python = pkgs.python310.withPackages (p: with p; [
+    cocotb
+  ]);
+
+
 in with pkgs; stdenv.mkDerivation {
   name = "Clash Silicon";
 
@@ -19,6 +25,7 @@ in with pkgs; stdenv.mkDerivation {
     clash
     verilator
     verilog
+    python
   ] ++ (with haskellPackages; [
     haskell-language-server
     hlint
