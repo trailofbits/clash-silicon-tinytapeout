@@ -30,12 +30,9 @@ def ADD_INSTR(n):
     return 0b1110_00 | n
 
 
-def DEC_INSTR():
-    return 0b111100
-
-
-def INVERT_INSTR():
-    return
+def SUB_INSTR(n):
+    assert n <= 0b11
+    return 0b111100 | n
 
 
 async def init(dut):
@@ -132,19 +129,19 @@ async def test_add_zero(dut):
 
 
 @cocotb.test()
-async def test_dec_iter(dut):
+async def test_sub_iter(dut):
     await init(dut)
 
-    # test decrementing repeatedly
+    # test incrementing by two repeatedly
     await FallingEdge(dut.clk)
-    dut.instr.value = DEC_INSTR()
+    dut.instr.value = SUB_INSTR(2)
     n = int(dut.r.value)
     await RisingEdge(dut.clk)
     iters = 100
     await ClockCycles(dut.clk, iters)
     assert (
-        int(dut.r.value) == (n - iters) % 32
-    ), f"dec_iter: {n} -/-> {int(dut.r.value)}"
+        int(dut.r.value) == (n - 2 * iters) % 32
+    ), f"sub100: {n} -/-> {int(dut.r.value)}"
 
 
 @cocotb.test()
@@ -213,7 +210,7 @@ async def test_cjump_t(dut):
     ), f"cjump target unset: r[0] = {int(dut.r.value)} != {p}"
     assert dut.cjump.value, "cjump unset when zero"
 
-    dut._log.info(f"r[1] zero, jumped to {p}")
+    dut._log.info(f"r[1]=0, jumped to {p}")
 
 
 @cocotb.test()
@@ -239,8 +236,6 @@ async def test_cjump_f(dut):
     dut.instr.value = CJUMP_ZE_INSTR(0)
     await FallingEdge(dut.clk)
     assert not dut.cjump.value, "cjump set when nonzero"
-    assert (
-        int(dut.r.value) == (nz - 1) % 32
-    ), f"cjump target set: r[0] = {int(dut.r.value)} != {p}"
+    assert int(dut.r.value) == nz, f"cjump target set: r[0] = {int(dut.r.value)} != {p}"
 
-    dut._log.info(f"r[1] nonzero, r[1] decremented to {p}")
+    dut._log.info(f"r[1]={nz} nonzero")
