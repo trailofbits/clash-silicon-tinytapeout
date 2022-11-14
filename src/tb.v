@@ -1,4 +1,3 @@
-`timescale 100us/100us
 `define default_netname none
 
 // a small verification shim.

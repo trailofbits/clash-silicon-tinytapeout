@@ -14,18 +14,33 @@ see `default.nix` for dependencies.
 
 # testing
 
+```sh
+$ nix-shell --pure --run "make lint test"
+```
+
+## clash
 clash-level tests are written in haskell using [quickcheck](https://hackage.haskell.org/package/QuickCheck).
 - testing pure haskell functions abstracted away from e.g. clock cycles
 - fuzzing
 
+## HDL
 HDL-level tests are written using [cocotb](https://www.cocotb.org/) and a small `src/tb.v` shim.
 - verification of the compiled Clash
 - clock-cycle dependencies
 - GTKWave
 
+to generate GTKWave output for a single cocotb test, here `test_regfile`,
+
 ```sh
-$ nix-shell --pure --run "make lint test"
+$ TESTCASE="test_regfile" nix-shell --run "make -C test"
 ```
+
+# special thanks
+
+- [Matt Venn](https://mattvenn.net/)
+- Connor Northway & Eddie Zhou (feedback and rubber ducking)
+
+![](test/dril.png)
 
 # resources
 

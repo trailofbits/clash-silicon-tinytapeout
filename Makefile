@@ -12,7 +12,7 @@ all: $(TOP)
 
 $(TOP): $(CLASH_SRC)
 	clash $(CLASH_FLAGS) src/Top.hs --verilog
-	cp verilog/Top.top/$(TOP_MODULE).v $@
+	sed '/timescale/d' verilog/Top.top/$(TOP_MODULE).v > $@
 
 .PHONY: lint
 lint: $(TOP)
