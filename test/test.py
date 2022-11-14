@@ -15,18 +15,19 @@ def PTR_INSTR(p):
     return 0b100_000 | p
 
 
-def CJUMP_EQ_INSTR(p):
+def CJUMP_INSTR(p):
     assert p <= 0b111
-    return 0b110_000 | p
+    return 0b101_000 | p
 
 
 def ADD_INSTR(n):
     assert n <= 0b11
-    return 0b110_000 | n
+    return 0b1100_00 | n
 
 
-def DEC_INSTR():
-    return 0b111000
+def SUB_INSTR(n):
+    assert n <= 0b11
+    return 0b1101_00 | n
 
 
 async def init(dut):
@@ -126,14 +127,16 @@ async def test_add_zero(dut):
 async def test_dec_iter(dut):
     await init(dut)
 
-    # test incrementing by two repeatedly
+    # test subtracting by two repeatedly
     await FallingEdge(dut.clk)
-    dut.instr.value = DEC_INSTR()
+    dut.instr.value = SUB_INSTR(2)
     n = int(dut.r.value)
     await RisingEdge(dut.clk)
     iters = 100
     await ClockCycles(dut.clk, iters)
-    assert int(dut.r.value) == (n - iters) % 32, f"dec100: {n} -/-> {int(dut.r.value)}"
+    assert (
+        int(dut.r.value) == (n - 2 * iters) % 32
+    ), f"dec100: {n} -/-> {int(dut.r.value)}"
 
 
 @cocotb.test()
@@ -179,7 +182,6 @@ async def test_regfile_state(dut):
         assert int(dut.r.value) == p, f"read R[{i}] = {int(dut.r.value)}, not {p}"
 
 
-"""
 @cocotb.test()
 async def test_cjump_t(dut):
     await init(dut)
@@ -196,7 +198,7 @@ async def test_cjump_t(dut):
     assert int(dut.r.value) == 0
 
     # r[0] == 0?
-    dut.instr.value = CJUMP_ZE_INSTR(0)
+    dut.instr.value = CJUMP_INSTR(0)
     await FallingEdge(dut.clk)
     assert (
         int(dut.r.value) == p
@@ -226,10 +228,9 @@ async def test_cjump_f(dut):
     await FallingEdge(dut.clk)
     assert int(dut.r.value) == nz and nz != 0
 
-    dut.instr.value = CJUMP_ZE_INSTR(0)
+    dut.instr.value = CJUMP_INSTR(0)
     await FallingEdge(dut.clk)
     assert not dut.cjump.value, "cjump set when nonzero"
     assert int(dut.r.value) == nz, f"cjump target set: r[0] = {int(dut.r.value)} != {p}"
 
     dut._log.info(f"r[1]={nz} nonzero")
-"""
