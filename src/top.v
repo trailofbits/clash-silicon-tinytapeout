@@ -9,18 +9,11 @@ module top
     , input [5:0] instr
 
       // Outputs
-    , output wire [7:0] io_out
+    , output wire [4:0] io_out
+    , output wire  cjump
     );
-  // src/Top.hs:13:1-88
-  reg [42:0] s1 = {{5'b00000,   5'b00000,   5'b00000,   5'b00000,   5'b00000,   5'b00000,
-  5'b00000,   5'b00000},   3'b000};
-  wire [4:0] c$case_scrut;
+  reg [43:0] result_0;
   reg [4:0] c$case_alt;
-  // src/Top.hs:11:1-6
-  wire [2:0] ptr;
-  // src/Top.hs:11:1-6
-  wire [39:0] rf;
-  reg [42:0] result;
   reg [4:0] c$case_alt_0;
   reg [4:0] c$case_alt_1;
   reg [4:0] c$case_alt_2;
@@ -28,11 +21,11 @@ module top
   reg [4:0] c$case_alt_4;
   reg [4:0] c$case_alt_5;
   reg [4:0] c$case_alt_6;
-  reg [4:0] c$case_alt_7;
-  reg [42:0] result_0;
-  reg [42:0] c$case_alt_8;
-  reg [42:0] result_1;
-  reg [42:0] c$case_alt_9;
+  reg [43:0] result_1;
+  reg [43:0] c$case_alt_7;
+  reg [43:0] result_2;
+  reg [43:0] c$case_alt_8;
+  reg [4:0] c$case_alt_9;
   reg [4:0] c$case_alt_10;
   reg [4:0] c$case_alt_11;
   reg [4:0] c$case_alt_12;
@@ -40,8 +33,8 @@ module top
   reg [4:0] c$case_alt_14;
   reg [4:0] c$case_alt_15;
   reg [4:0] c$case_alt_16;
-  reg [4:0] c$case_alt_17;
-  wire [4:0] c$case_alt_18;
+  wire [4:0] c$case_alt_17;
+  reg [4:0] c$case_alt_18;
   reg [4:0] c$case_alt_19;
   reg [4:0] c$case_alt_20;
   reg [4:0] c$case_alt_21;
@@ -49,8 +42,10 @@ module top
   reg [4:0] c$case_alt_23;
   reg [4:0] c$case_alt_24;
   reg [4:0] c$case_alt_25;
-  reg [4:0] c$case_alt_26;
-  wire [4:0] c$case_alt_27;
+  wire [4:0] c$case_alt_26;
+  // src/Cpu.hs:26:1-3
+  wire  j;
+  reg [4:0] c$case_alt_27;
   reg [4:0] c$case_alt_28;
   reg [4:0] c$case_alt_29;
   reg [4:0] c$case_alt_30;
@@ -58,8 +53,8 @@ module top
   reg [4:0] c$case_alt_32;
   reg [4:0] c$case_alt_33;
   reg [4:0] c$case_alt_34;
-  reg [4:0] c$case_alt_35;
-  wire [4:0] c$case_alt_36;
+  wire [4:0] c$case_alt_35;
+  reg [4:0] c$case_alt_36;
   reg [4:0] c$case_alt_37;
   reg [4:0] c$case_alt_38;
   reg [4:0] c$case_alt_39;
@@ -67,9 +62,8 @@ module top
   reg [4:0] c$case_alt_41;
   reg [4:0] c$case_alt_42;
   reg [4:0] c$case_alt_43;
-  reg [4:0] c$case_alt_44;
-  wire [4:0] c$case_alt_45;
-  // src/Cpu.hs:32:1-3
+  wire [4:0] c$case_alt_44;
+  // src/Cpu.hs:26:1-3
   reg [4:0] c$r_case_alt;
   wire [4:0] c$cpu_$j_$j1_$j2_$j3Out;
   wire [3:0] c$cpu_$j_$j1_$j2_$j3Out_app_arg;
@@ -80,13 +74,23 @@ module top
   wire [2:0] c$cpu_$j_$j1Out;
   wire [1:0] c$cpu_$j_$j1Out_app_arg_0;
   wire [0:0] c$cpu_$jOut_case_alt_0;
-  // src/Cpu.hs:32:1-3
-  wire [2:0] ptr_0;
-  // src/Cpu.hs:32:1-3
+  // src/Cpu.hs:26:1-3
+  wire [2:0] ptr;
+  // src/Cpu.hs:26:1-3
+  wire [39:0] rf;
+  reg [4:0] c$case_alt_45;
+  // src/Top.hs:10:1-6
   wire [39:0] rf_0;
+  // src/Top.hs:10:1-6
+  wire [2:0] ptr_0;
+  // src/Top.hs:10:1-6
+  wire  j_0;
+  // src/Top.hs:12:1-96
+  reg [43:0] s1 = {{5'b00000,   5'b00000,   5'b00000,   5'b00000,   5'b00000,   5'b00000,
+  5'b00000,   5'b00000},   3'b000,   1'b0};
+  wire [5:0] result_selection_res;
   wire signed [63:0] c$case_alt_selection_1;
   wire signed [63:0] c$case_alt_selection_0;
-  wire [5:0] result_selection_res;
   wire signed [63:0] c$case_alt_selection_4;
   wire signed [63:0] c$case_alt_selection_3;
   wire signed [63:0] c$case_alt_selection_7;
@@ -101,11 +105,11 @@ module top
   wire signed [63:0] c$case_alt_selection_18;
   wire signed [63:0] c$case_alt_selection_22;
   wire signed [63:0] c$case_alt_selection_21;
-  wire signed [63:0] c$case_alt_selection_25;
-  wire signed [63:0] c$case_alt_selection_24;
   wire [5:0] result_selection_res_0;
   wire [5:0] result_selection_res_1;
   wire [5:0] c$case_alt_selection_res;
+  wire signed [63:0] c$case_alt_selection_27;
+  wire signed [63:0] c$case_alt_selection_26;
   wire signed [63:0] c$case_alt_selection_30;
   wire signed [63:0] c$case_alt_selection_29;
   wire signed [63:0] c$case_alt_selection_33;
@@ -168,28 +172,23 @@ module top
   wire signed [63:0] c$case_alt_selection_116;
   wire signed [63:0] c$case_alt_selection_120;
   wire signed [63:0] c$case_alt_selection_119;
-  wire signed [63:0] c$case_alt_selection_123;
-  wire signed [63:0] c$case_alt_selection_122;
   wire signed [63:0] c$r_case_alt_selection_1;
   wire signed [63:0] c$r_case_alt_selection_0;
+  wire signed [63:0] c$case_alt_selection_123;
+  wire signed [63:0] c$case_alt_selection_122;
+  wire [5:0] result;
 
-  // register begin
-  always @(posedge clk or  posedge  rst) begin : s1_register
-    if ( rst) begin
-      s1 <= {{5'b00000,   5'b00000,   5'b00000,   5'b00000,   5'b00000,   5'b00000,
-    5'b00000,   5'b00000},   3'b000};
-    end else begin
-      s1 <= result;
-    end
+  assign result_selection_res = 6'b100000 & instr;
+
+  always @(*) begin
+    case(result_selection_res)
+      6'b000000 : result_0 = {{c$case_alt_6,
+                               c$case_alt_5,   c$case_alt_4,   c$case_alt_3,
+                               c$case_alt_2,   c$case_alt_1,   c$case_alt_0,
+                               c$case_alt},   ptr,   j};
+      default : result_0 = result_1;
+    endcase
   end
-  // register end
-
-  assign io_out = {1'b0,   1'b0,   1'b0,
-                   c$case_scrut[4:4],   c$case_scrut[3:3],
-                   c$case_scrut[2:2],   c$case_scrut[1:1],
-                   c$case_scrut[0:0]};
-
-  assign c$case_scrut = c$case_alt;
 
   assign c$case_alt_selection_1 = c$case_alt_selection_0;
 
@@ -197,118 +196,85 @@ module top
 
   always @(*) begin
     case(c$case_alt_selection_1)
-      64'sd1 : c$case_alt = rf[34:30];
-      64'sd2 : c$case_alt = rf[29:25];
-      64'sd3 : c$case_alt = rf[24:20];
-      64'sd4 : c$case_alt = rf[19:15];
-      64'sd5 : c$case_alt = rf[14:10];
-      64'sd6 : c$case_alt = rf[9:5];
-      64'sd7 : c$case_alt = rf[4:0];
-      default : c$case_alt = rf[39:35];
-    endcase
-  end
-
-  assign ptr = s1[2:0];
-
-  assign rf = s1[42:3];
-
-  assign result_selection_res = 6'b100000 & instr;
-
-  always @(*) begin
-    case(result_selection_res)
-      6'b000000 : result = {{c$case_alt_7,
-                             c$case_alt_6,   c$case_alt_5,   c$case_alt_4,
-                             c$case_alt_3,   c$case_alt_2,   c$case_alt_1,
-                             c$case_alt_0},   ptr_0};
-      default : result = result_0;
+      64'sd7 : c$case_alt = c$cpu_$j_$j1_$j2_$j3Out;
+      default : c$case_alt = rf[4:0];
     endcase
   end
 
   assign c$case_alt_selection_4 = c$case_alt_selection_3;
 
-  assign c$case_alt_selection_3 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$case_alt_selection_3 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$case_alt_selection_4)
-      64'sd7 : c$case_alt_0 = c$cpu_$j_$j1_$j2_$j3Out;
-      default : c$case_alt_0 = rf_0[4:0];
+      64'sd6 : c$case_alt_0 = c$cpu_$j_$j1_$j2_$j3Out;
+      default : c$case_alt_0 = rf[9:5];
     endcase
   end
 
   assign c$case_alt_selection_7 = c$case_alt_selection_6;
 
-  assign c$case_alt_selection_6 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$case_alt_selection_6 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$case_alt_selection_7)
-      64'sd6 : c$case_alt_1 = c$cpu_$j_$j1_$j2_$j3Out;
-      default : c$case_alt_1 = rf_0[9:5];
+      64'sd5 : c$case_alt_1 = c$cpu_$j_$j1_$j2_$j3Out;
+      default : c$case_alt_1 = rf[14:10];
     endcase
   end
 
   assign c$case_alt_selection_10 = c$case_alt_selection_9;
 
-  assign c$case_alt_selection_9 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$case_alt_selection_9 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$case_alt_selection_10)
-      64'sd5 : c$case_alt_2 = c$cpu_$j_$j1_$j2_$j3Out;
-      default : c$case_alt_2 = rf_0[14:10];
+      64'sd4 : c$case_alt_2 = c$cpu_$j_$j1_$j2_$j3Out;
+      default : c$case_alt_2 = rf[19:15];
     endcase
   end
 
   assign c$case_alt_selection_13 = c$case_alt_selection_12;
 
-  assign c$case_alt_selection_12 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$case_alt_selection_12 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$case_alt_selection_13)
-      64'sd4 : c$case_alt_3 = c$cpu_$j_$j1_$j2_$j3Out;
-      default : c$case_alt_3 = rf_0[19:15];
+      64'sd3 : c$case_alt_3 = c$cpu_$j_$j1_$j2_$j3Out;
+      default : c$case_alt_3 = rf[24:20];
     endcase
   end
 
   assign c$case_alt_selection_16 = c$case_alt_selection_15;
 
-  assign c$case_alt_selection_15 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$case_alt_selection_15 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$case_alt_selection_16)
-      64'sd3 : c$case_alt_4 = c$cpu_$j_$j1_$j2_$j3Out;
-      default : c$case_alt_4 = rf_0[24:20];
+      64'sd2 : c$case_alt_4 = c$cpu_$j_$j1_$j2_$j3Out;
+      default : c$case_alt_4 = rf[29:25];
     endcase
   end
 
   assign c$case_alt_selection_19 = c$case_alt_selection_18;
 
-  assign c$case_alt_selection_18 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$case_alt_selection_18 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$case_alt_selection_19)
-      64'sd2 : c$case_alt_5 = c$cpu_$j_$j1_$j2_$j3Out;
-      default : c$case_alt_5 = rf_0[29:25];
+      64'sd1 : c$case_alt_5 = c$cpu_$j_$j1_$j2_$j3Out;
+      default : c$case_alt_5 = rf[34:30];
     endcase
   end
 
   assign c$case_alt_selection_22 = c$case_alt_selection_21;
 
-  assign c$case_alt_selection_21 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$case_alt_selection_21 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$case_alt_selection_22)
-      64'sd1 : c$case_alt_6 = c$cpu_$j_$j1_$j2_$j3Out;
-      default : c$case_alt_6 = rf_0[34:30];
-    endcase
-  end
-
-  assign c$case_alt_selection_25 = c$case_alt_selection_24;
-
-  assign c$case_alt_selection_24 = $unsigned({{(64-3) {1'b0}},ptr_0});
-
-  always @(*) begin
-    case(c$case_alt_selection_25)
-      64'sd0 : c$case_alt_7 = c$cpu_$j_$j1_$j2_$j3Out;
-      default : c$case_alt_7 = rf_0[39:35];
+      64'sd0 : c$case_alt_6 = c$cpu_$j_$j1_$j2_$j3Out;
+      default : c$case_alt_6 = rf[39:35];
     endcase
   end
 
@@ -316,19 +282,19 @@ module top
 
   always @(*) begin
     case(result_selection_res_0)
-      6'b100000 : result_0 = {rf_0,
-                              c$cpu_$j_$j1Out};
-      6'b101000 : result_0 = c$case_alt_8;
-      default : result_0 = result_1;
+      6'b100000 : result_1 = {rf,
+                              c$cpu_$j_$j1Out,   j};
+      6'b101000 : result_1 = c$case_alt_7;
+      default : result_1 = result_2;
     endcase
   end
 
   always @(*) begin
     case(c$r_case_alt)
-      5'b00000 : c$case_alt_8 = {rf_0,
-                                 c$cpu_$j_$j1Out};
-      default : c$case_alt_8 = {rf_0,
-                                ptr_0 + 3'b001};
+      5'b00000 : c$case_alt_7 = {rf,
+                                 c$cpu_$j_$j1Out,   j};
+      default : c$case_alt_7 = {rf,   ptr + 3'b001,
+                                j};
     endcase
   end
 
@@ -336,17 +302,17 @@ module top
 
   always @(*) begin
     case(result_selection_res_1)
-      6'b110000 : result_1 = {{c$case_alt_26,
-                               c$case_alt_25,   c$case_alt_24,
-                               c$case_alt_23,   c$case_alt_22,
-                               c$case_alt_21,   c$case_alt_20,
-                               c$case_alt_19},   ptr_0};
-      6'b110100 : result_1 = {{c$case_alt_17,
-                               c$case_alt_16,   c$case_alt_15,
-                               c$case_alt_14,   c$case_alt_13,
-                               c$case_alt_12,   c$case_alt_11,
-                               c$case_alt_10},   ptr_0};
-      default : result_1 = c$case_alt_9;
+      6'b110000 : result_2 = {{c$case_alt_25,
+                               c$case_alt_24,   c$case_alt_23,
+                               c$case_alt_22,   c$case_alt_21,
+                               c$case_alt_20,   c$case_alt_19,
+                               c$case_alt_18},   ptr,   j};
+      6'b110100 : result_2 = {{c$case_alt_16,
+                               c$case_alt_15,   c$case_alt_14,
+                               c$case_alt_13,   c$case_alt_12,
+                               c$case_alt_11,   c$case_alt_10,
+                               c$case_alt_9},   ptr,   j};
+      default : result_2 = c$case_alt_8;
     endcase
   end
 
@@ -354,398 +320,400 @@ module top
 
   always @(*) begin
     case(c$case_alt_selection_res)
-      6'b111000 : c$case_alt_9 = {{c$case_alt_44,
-                                   c$case_alt_43,   c$case_alt_42,
-                                   c$case_alt_41,   c$case_alt_40,
-                                   c$case_alt_39,   c$case_alt_38,
-                                   c$case_alt_37},   ptr_0};
-      6'b111010 : c$case_alt_9 = {{c$case_alt_35,
-                                   c$case_alt_34,   c$case_alt_33,
-                                   c$case_alt_32,   c$case_alt_31,
-                                   c$case_alt_30,   c$case_alt_29,
-                                   c$case_alt_28},   ptr_0};
-      6'b111100 : c$case_alt_9 = {rf_0,
-                                  ptr_0 + 3'b001};
-      6'b111110 : c$case_alt_9 = {rf_0,
-                                  ptr_0 - 3'b001};
-      default : c$case_alt_9 = s1;
+      6'b111000 : c$case_alt_8 = {{c$case_alt_43,
+                                   c$case_alt_42,   c$case_alt_41,
+                                   c$case_alt_40,   c$case_alt_39,
+                                   c$case_alt_38,   c$case_alt_37,
+                                   c$case_alt_36},   ptr,   j};
+      6'b111010 : c$case_alt_8 = {{c$case_alt_34,
+                                   c$case_alt_33,   c$case_alt_32,
+                                   c$case_alt_31,   c$case_alt_30,
+                                   c$case_alt_29,   c$case_alt_28,
+                                   c$case_alt_27},   ptr,   j};
+      6'b111100 : c$case_alt_8 = {rf,   ptr + 3'b001,
+                                  j};
+      6'b111110 : c$case_alt_8 = {rf,   ptr - 3'b001,
+                                  j};
+      default : c$case_alt_8 = s1;
+    endcase
+  end
+
+  assign c$case_alt_selection_27 = c$case_alt_selection_26;
+
+  assign c$case_alt_selection_26 = $unsigned({{(64-3) {1'b0}},ptr});
+
+  always @(*) begin
+    case(c$case_alt_selection_27)
+      64'sd7 : c$case_alt_9 = c$case_alt_17;
+      default : c$case_alt_9 = rf[4:0];
     endcase
   end
 
   assign c$case_alt_selection_30 = c$case_alt_selection_29;
 
-  assign c$case_alt_selection_29 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$case_alt_selection_29 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$case_alt_selection_30)
-      64'sd7 : c$case_alt_10 = c$case_alt_18;
-      default : c$case_alt_10 = rf_0[4:0];
+      64'sd6 : c$case_alt_10 = c$case_alt_17;
+      default : c$case_alt_10 = rf[9:5];
     endcase
   end
 
   assign c$case_alt_selection_33 = c$case_alt_selection_32;
 
-  assign c$case_alt_selection_32 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$case_alt_selection_32 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$case_alt_selection_33)
-      64'sd6 : c$case_alt_11 = c$case_alt_18;
-      default : c$case_alt_11 = rf_0[9:5];
+      64'sd5 : c$case_alt_11 = c$case_alt_17;
+      default : c$case_alt_11 = rf[14:10];
     endcase
   end
 
   assign c$case_alt_selection_36 = c$case_alt_selection_35;
 
-  assign c$case_alt_selection_35 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$case_alt_selection_35 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$case_alt_selection_36)
-      64'sd5 : c$case_alt_12 = c$case_alt_18;
-      default : c$case_alt_12 = rf_0[14:10];
+      64'sd4 : c$case_alt_12 = c$case_alt_17;
+      default : c$case_alt_12 = rf[19:15];
     endcase
   end
 
   assign c$case_alt_selection_39 = c$case_alt_selection_38;
 
-  assign c$case_alt_selection_38 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$case_alt_selection_38 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$case_alt_selection_39)
-      64'sd4 : c$case_alt_13 = c$case_alt_18;
-      default : c$case_alt_13 = rf_0[19:15];
+      64'sd3 : c$case_alt_13 = c$case_alt_17;
+      default : c$case_alt_13 = rf[24:20];
     endcase
   end
 
   assign c$case_alt_selection_42 = c$case_alt_selection_41;
 
-  assign c$case_alt_selection_41 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$case_alt_selection_41 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$case_alt_selection_42)
-      64'sd3 : c$case_alt_14 = c$case_alt_18;
-      default : c$case_alt_14 = rf_0[24:20];
+      64'sd2 : c$case_alt_14 = c$case_alt_17;
+      default : c$case_alt_14 = rf[29:25];
     endcase
   end
 
   assign c$case_alt_selection_45 = c$case_alt_selection_44;
 
-  assign c$case_alt_selection_44 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$case_alt_selection_44 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$case_alt_selection_45)
-      64'sd2 : c$case_alt_15 = c$case_alt_18;
-      default : c$case_alt_15 = rf_0[29:25];
+      64'sd1 : c$case_alt_15 = c$case_alt_17;
+      default : c$case_alt_15 = rf[34:30];
     endcase
   end
 
   assign c$case_alt_selection_48 = c$case_alt_selection_47;
 
-  assign c$case_alt_selection_47 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$case_alt_selection_47 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$case_alt_selection_48)
-      64'sd1 : c$case_alt_16 = c$case_alt_18;
-      default : c$case_alt_16 = rf_0[34:30];
+      64'sd0 : c$case_alt_16 = c$case_alt_17;
+      default : c$case_alt_16 = rf[39:35];
     endcase
   end
+
+  assign c$case_alt_17 = c$r_case_alt - c$cpu_$jOut;
 
   assign c$case_alt_selection_51 = c$case_alt_selection_50;
 
-  assign c$case_alt_selection_50 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$case_alt_selection_50 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$case_alt_selection_51)
-      64'sd0 : c$case_alt_17 = c$case_alt_18;
-      default : c$case_alt_17 = rf_0[39:35];
+      64'sd7 : c$case_alt_18 = c$case_alt_26;
+      default : c$case_alt_18 = rf[4:0];
     endcase
   end
 
-  assign c$case_alt_18 = c$r_case_alt - c$cpu_$jOut;
-
   assign c$case_alt_selection_54 = c$case_alt_selection_53;
 
-  assign c$case_alt_selection_53 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$case_alt_selection_53 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$case_alt_selection_54)
-      64'sd7 : c$case_alt_19 = c$case_alt_27;
-      default : c$case_alt_19 = rf_0[4:0];
+      64'sd6 : c$case_alt_19 = c$case_alt_26;
+      default : c$case_alt_19 = rf[9:5];
     endcase
   end
 
   assign c$case_alt_selection_57 = c$case_alt_selection_56;
 
-  assign c$case_alt_selection_56 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$case_alt_selection_56 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$case_alt_selection_57)
-      64'sd6 : c$case_alt_20 = c$case_alt_27;
-      default : c$case_alt_20 = rf_0[9:5];
+      64'sd5 : c$case_alt_20 = c$case_alt_26;
+      default : c$case_alt_20 = rf[14:10];
     endcase
   end
 
   assign c$case_alt_selection_60 = c$case_alt_selection_59;
 
-  assign c$case_alt_selection_59 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$case_alt_selection_59 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$case_alt_selection_60)
-      64'sd5 : c$case_alt_21 = c$case_alt_27;
-      default : c$case_alt_21 = rf_0[14:10];
+      64'sd4 : c$case_alt_21 = c$case_alt_26;
+      default : c$case_alt_21 = rf[19:15];
     endcase
   end
 
   assign c$case_alt_selection_63 = c$case_alt_selection_62;
 
-  assign c$case_alt_selection_62 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$case_alt_selection_62 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$case_alt_selection_63)
-      64'sd4 : c$case_alt_22 = c$case_alt_27;
-      default : c$case_alt_22 = rf_0[19:15];
+      64'sd3 : c$case_alt_22 = c$case_alt_26;
+      default : c$case_alt_22 = rf[24:20];
     endcase
   end
 
   assign c$case_alt_selection_66 = c$case_alt_selection_65;
 
-  assign c$case_alt_selection_65 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$case_alt_selection_65 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$case_alt_selection_66)
-      64'sd3 : c$case_alt_23 = c$case_alt_27;
-      default : c$case_alt_23 = rf_0[24:20];
+      64'sd2 : c$case_alt_23 = c$case_alt_26;
+      default : c$case_alt_23 = rf[29:25];
     endcase
   end
 
   assign c$case_alt_selection_69 = c$case_alt_selection_68;
 
-  assign c$case_alt_selection_68 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$case_alt_selection_68 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$case_alt_selection_69)
-      64'sd2 : c$case_alt_24 = c$case_alt_27;
-      default : c$case_alt_24 = rf_0[29:25];
+      64'sd1 : c$case_alt_24 = c$case_alt_26;
+      default : c$case_alt_24 = rf[34:30];
     endcase
   end
 
   assign c$case_alt_selection_72 = c$case_alt_selection_71;
 
-  assign c$case_alt_selection_71 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$case_alt_selection_71 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$case_alt_selection_72)
-      64'sd1 : c$case_alt_25 = c$case_alt_27;
-      default : c$case_alt_25 = rf_0[34:30];
+      64'sd0 : c$case_alt_25 = c$case_alt_26;
+      default : c$case_alt_25 = rf[39:35];
     endcase
   end
+
+  assign c$case_alt_26 = c$r_case_alt + c$cpu_$jOut;
+
+  assign j = s1[0:0];
 
   assign c$case_alt_selection_75 = c$case_alt_selection_74;
 
-  assign c$case_alt_selection_74 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$case_alt_selection_74 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$case_alt_selection_75)
-      64'sd0 : c$case_alt_26 = c$case_alt_27;
-      default : c$case_alt_26 = rf_0[39:35];
+      64'sd7 : c$case_alt_27 = c$case_alt_35;
+      default : c$case_alt_27 = rf[4:0];
     endcase
   end
 
-  assign c$case_alt_27 = c$r_case_alt + c$cpu_$jOut;
-
   assign c$case_alt_selection_78 = c$case_alt_selection_77;
 
-  assign c$case_alt_selection_77 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$case_alt_selection_77 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$case_alt_selection_78)
-      64'sd7 : c$case_alt_28 = c$case_alt_36;
-      default : c$case_alt_28 = rf_0[4:0];
+      64'sd6 : c$case_alt_28 = c$case_alt_35;
+      default : c$case_alt_28 = rf[9:5];
     endcase
   end
 
   assign c$case_alt_selection_81 = c$case_alt_selection_80;
 
-  assign c$case_alt_selection_80 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$case_alt_selection_80 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$case_alt_selection_81)
-      64'sd6 : c$case_alt_29 = c$case_alt_36;
-      default : c$case_alt_29 = rf_0[9:5];
+      64'sd5 : c$case_alt_29 = c$case_alt_35;
+      default : c$case_alt_29 = rf[14:10];
     endcase
   end
 
   assign c$case_alt_selection_84 = c$case_alt_selection_83;
 
-  assign c$case_alt_selection_83 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$case_alt_selection_83 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$case_alt_selection_84)
-      64'sd5 : c$case_alt_30 = c$case_alt_36;
-      default : c$case_alt_30 = rf_0[14:10];
+      64'sd4 : c$case_alt_30 = c$case_alt_35;
+      default : c$case_alt_30 = rf[19:15];
     endcase
   end
 
   assign c$case_alt_selection_87 = c$case_alt_selection_86;
 
-  assign c$case_alt_selection_86 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$case_alt_selection_86 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$case_alt_selection_87)
-      64'sd4 : c$case_alt_31 = c$case_alt_36;
-      default : c$case_alt_31 = rf_0[19:15];
+      64'sd3 : c$case_alt_31 = c$case_alt_35;
+      default : c$case_alt_31 = rf[24:20];
     endcase
   end
 
   assign c$case_alt_selection_90 = c$case_alt_selection_89;
 
-  assign c$case_alt_selection_89 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$case_alt_selection_89 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$case_alt_selection_90)
-      64'sd3 : c$case_alt_32 = c$case_alt_36;
-      default : c$case_alt_32 = rf_0[24:20];
+      64'sd2 : c$case_alt_32 = c$case_alt_35;
+      default : c$case_alt_32 = rf[29:25];
     endcase
   end
 
   assign c$case_alt_selection_93 = c$case_alt_selection_92;
 
-  assign c$case_alt_selection_92 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$case_alt_selection_92 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$case_alt_selection_93)
-      64'sd2 : c$case_alt_33 = c$case_alt_36;
-      default : c$case_alt_33 = rf_0[29:25];
+      64'sd1 : c$case_alt_33 = c$case_alt_35;
+      default : c$case_alt_33 = rf[34:30];
     endcase
   end
 
   assign c$case_alt_selection_96 = c$case_alt_selection_95;
 
-  assign c$case_alt_selection_95 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$case_alt_selection_95 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$case_alt_selection_96)
-      64'sd1 : c$case_alt_34 = c$case_alt_36;
-      default : c$case_alt_34 = rf_0[34:30];
+      64'sd0 : c$case_alt_34 = c$case_alt_35;
+      default : c$case_alt_34 = rf[39:35];
     endcase
   end
+
+  assign c$case_alt_35 = c$r_case_alt << 64'sd1;
 
   assign c$case_alt_selection_99 = c$case_alt_selection_98;
 
-  assign c$case_alt_selection_98 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$case_alt_selection_98 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$case_alt_selection_99)
-      64'sd0 : c$case_alt_35 = c$case_alt_36;
-      default : c$case_alt_35 = rf_0[39:35];
+      64'sd7 : c$case_alt_36 = c$case_alt_44;
+      default : c$case_alt_36 = rf[4:0];
     endcase
   end
 
-  assign c$case_alt_36 = c$r_case_alt << 64'sd1;
-
   assign c$case_alt_selection_102 = c$case_alt_selection_101;
 
-  assign c$case_alt_selection_101 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$case_alt_selection_101 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$case_alt_selection_102)
-      64'sd7 : c$case_alt_37 = c$case_alt_45;
-      default : c$case_alt_37 = rf_0[4:0];
+      64'sd6 : c$case_alt_37 = c$case_alt_44;
+      default : c$case_alt_37 = rf[9:5];
     endcase
   end
 
   assign c$case_alt_selection_105 = c$case_alt_selection_104;
 
-  assign c$case_alt_selection_104 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$case_alt_selection_104 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$case_alt_selection_105)
-      64'sd6 : c$case_alt_38 = c$case_alt_45;
-      default : c$case_alt_38 = rf_0[9:5];
+      64'sd5 : c$case_alt_38 = c$case_alt_44;
+      default : c$case_alt_38 = rf[14:10];
     endcase
   end
 
   assign c$case_alt_selection_108 = c$case_alt_selection_107;
 
-  assign c$case_alt_selection_107 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$case_alt_selection_107 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$case_alt_selection_108)
-      64'sd5 : c$case_alt_39 = c$case_alt_45;
-      default : c$case_alt_39 = rf_0[14:10];
+      64'sd4 : c$case_alt_39 = c$case_alt_44;
+      default : c$case_alt_39 = rf[19:15];
     endcase
   end
 
   assign c$case_alt_selection_111 = c$case_alt_selection_110;
 
-  assign c$case_alt_selection_110 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$case_alt_selection_110 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$case_alt_selection_111)
-      64'sd4 : c$case_alt_40 = c$case_alt_45;
-      default : c$case_alt_40 = rf_0[19:15];
+      64'sd3 : c$case_alt_40 = c$case_alt_44;
+      default : c$case_alt_40 = rf[24:20];
     endcase
   end
 
   assign c$case_alt_selection_114 = c$case_alt_selection_113;
 
-  assign c$case_alt_selection_113 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$case_alt_selection_113 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$case_alt_selection_114)
-      64'sd3 : c$case_alt_41 = c$case_alt_45;
-      default : c$case_alt_41 = rf_0[24:20];
+      64'sd2 : c$case_alt_41 = c$case_alt_44;
+      default : c$case_alt_41 = rf[29:25];
     endcase
   end
 
   assign c$case_alt_selection_117 = c$case_alt_selection_116;
 
-  assign c$case_alt_selection_116 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$case_alt_selection_116 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$case_alt_selection_117)
-      64'sd2 : c$case_alt_42 = c$case_alt_45;
-      default : c$case_alt_42 = rf_0[29:25];
+      64'sd1 : c$case_alt_42 = c$case_alt_44;
+      default : c$case_alt_42 = rf[34:30];
     endcase
   end
 
   assign c$case_alt_selection_120 = c$case_alt_selection_119;
 
-  assign c$case_alt_selection_119 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$case_alt_selection_119 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$case_alt_selection_120)
-      64'sd1 : c$case_alt_43 = c$case_alt_45;
-      default : c$case_alt_43 = rf_0[34:30];
+      64'sd0 : c$case_alt_43 = c$case_alt_44;
+      default : c$case_alt_43 = rf[39:35];
     endcase
   end
 
-  assign c$case_alt_selection_123 = c$case_alt_selection_122;
-
-  assign c$case_alt_selection_122 = $unsigned({{(64-3) {1'b0}},ptr_0});
-
-  always @(*) begin
-    case(c$case_alt_selection_123)
-      64'sd0 : c$case_alt_44 = c$case_alt_45;
-      default : c$case_alt_44 = rf_0[39:35];
-    endcase
-  end
-
-  assign c$case_alt_45 = ~ c$r_case_alt;
+  assign c$case_alt_44 = ~ c$r_case_alt;
 
   assign c$r_case_alt_selection_1 = c$r_case_alt_selection_0;
 
-  assign c$r_case_alt_selection_0 = $unsigned({{(64-3) {1'b0}},ptr_0});
+  assign c$r_case_alt_selection_0 = $unsigned({{(64-3) {1'b0}},ptr});
 
   always @(*) begin
     case(c$r_case_alt_selection_1)
-      64'sd1 : c$r_case_alt = rf_0[34:30];
-      64'sd2 : c$r_case_alt = rf_0[29:25];
-      64'sd3 : c$r_case_alt = rf_0[24:20];
-      64'sd4 : c$r_case_alt = rf_0[19:15];
-      64'sd5 : c$r_case_alt = rf_0[14:10];
-      64'sd6 : c$r_case_alt = rf_0[9:5];
-      64'sd7 : c$r_case_alt = rf_0[4:0];
-      default : c$r_case_alt = rf_0[39:35];
+      64'sd1 : c$r_case_alt = rf[34:30];
+      64'sd2 : c$r_case_alt = rf[29:25];
+      64'sd3 : c$r_case_alt = rf[24:20];
+      64'sd4 : c$r_case_alt = rf[19:15];
+      64'sd5 : c$r_case_alt = rf[14:10];
+      64'sd6 : c$r_case_alt = rf[9:5];
+      64'sd7 : c$r_case_alt = rf[4:0];
+      default : c$r_case_alt = rf[39:35];
     endcase
   end
 
@@ -767,9 +735,49 @@ module top
 
   assign c$cpu_$jOut_case_alt_0 = ((instr[64'sd0]) == (1'b1)) ? 1'b1 : 1'b0;
 
-  assign ptr_0 = s1[2:0];
+  assign ptr = s1[3:1];
 
-  assign rf_0 = s1[42:3];
+  assign rf = s1[43:4];
+
+  assign c$case_alt_selection_123 = c$case_alt_selection_122;
+
+  assign c$case_alt_selection_122 = $unsigned({{(64-3) {1'b0}},ptr_0});
+
+  always @(*) begin
+    case(c$case_alt_selection_123)
+      64'sd1 : c$case_alt_45 = rf_0[34:30];
+      64'sd2 : c$case_alt_45 = rf_0[29:25];
+      64'sd3 : c$case_alt_45 = rf_0[24:20];
+      64'sd4 : c$case_alt_45 = rf_0[19:15];
+      64'sd5 : c$case_alt_45 = rf_0[14:10];
+      64'sd6 : c$case_alt_45 = rf_0[9:5];
+      64'sd7 : c$case_alt_45 = rf_0[4:0];
+      default : c$case_alt_45 = rf_0[39:35];
+    endcase
+  end
+
+  assign rf_0 = s1[43:4];
+
+  assign ptr_0 = s1[3:1];
+
+  assign j_0 = s1[0:0];
+
+  // register begin
+  always @(posedge clk or  posedge  rst) begin : s1_register
+    if ( rst) begin
+      s1 <= {{5'b00000,   5'b00000,   5'b00000,   5'b00000,   5'b00000,   5'b00000,
+    5'b00000,   5'b00000},   3'b000,   1'b0};
+    end else begin
+      s1 <= result_0;
+    end
+  end
+  // register end
+
+  assign result = {c$case_alt_45,   j_0};
+
+  assign io_out = result[5:1];
+
+  assign cjump = result[0:0];
 
 
 endmodule

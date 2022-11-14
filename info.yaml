@@ -18,20 +18,20 @@ documentation:
   clock_hz:     1000
   picture:      ""
   inputs:
-    - clock
-    - rst
     - instr 5
     - instr 4
     - instr 3
     - instr 2
     - instr 1
     - instr 0
+    - rst
+    - clock
   outputs:
-    - digit 7
-    - digit 6
-    - digit 5
-    - digit 4
-    - digit 3
-    - digit 2
-    - digit 1
-    - digit 0
+    - jump
+    - unused
+    - unused
+    - register 4
+    - register 3
+    - register 2
+    - register 1
+    - register 0

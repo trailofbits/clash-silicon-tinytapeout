@@ -2,22 +2,23 @@ module Top where
 
 import Clash.Annotations.TH
 import Clash.Prelude
-
 import Cpu
 
 mooreF = cpu
 
-mooreO :: State -> Port
-mooreO (rf, ptr) = 0 :> 0 :> 0 :> unpack (rf !! ptr)
+mooreO :: State -> (Register, CJump)
+mooreO (rf, ptr, j) = (rf !! ptr, j)
 
-regMachineM :: (HiddenClockResetEnable dom) => Signal dom Instruction -> Signal dom Port
-regMachineM = moore mooreF mooreO (unpack 0, 0)
+mooreM :: (HiddenClockResetEnable dom) => Signal dom Instruction -> Signal dom (Register, CJump)
+mooreM = moore mooreF mooreO (unpack 0, 0, low)
 
 top ::
   ("clk" ::: Clock System) ->
   ("rst" ::: Reset System) ->
   ("instr" ::: Signal System Instruction) ->
-  ("io_out" ::: Signal System Port)
-top clk rst instr = exposeClockResetEnable (regMachineM instr) clk rst enableGen
+  ( "io_out" ::: Signal System Register,
+    "cjump" ::: Signal System CJump
+  )
+top clk rst instr = exposeClockResetEnable (unbundle $ mooreM instr) clk rst enableGen
 
 makeTopEntityWithName 'top "top"
