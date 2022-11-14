@@ -14,7 +14,9 @@ let
 
 
   python = pkgs.python310.withPackages (p: with p; [
+    pytest
     cocotb
+    pylint
   ]);
 
 

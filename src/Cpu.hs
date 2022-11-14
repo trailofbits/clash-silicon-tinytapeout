@@ -42,9 +42,13 @@ cpu s@(rf, ptr) =
     -- subtract literal value R
     $(bitPattern "1101nn") -> (replace ptr (r - zeroExtend nn) rf, ptr)
     -- bitwise complement R
-    $(bitPattern "1110..") -> (replace ptr (complement r) rf, ptr)
+    $(bitPattern "11100.") -> (replace ptr (complement r) rf, ptr)
     -- left shift R
-    $(bitPattern "1111..") -> (replace ptr (r `shiftL` 1) rf, ptr)
+    $(bitPattern "11101.") -> (replace ptr (r `shiftL` 1) rf, ptr)
+    -- increment pointer
+    $(bitPattern "11110.") -> (rf, ptr + 1)
+    -- decrement pointer
+    $(bitPattern "11111.") -> (rf, ptr - 1)
     -- NOTE(jl): this is a circuit; can't leave an undefined branch.
     _ -> (rf, ptr)
   where
