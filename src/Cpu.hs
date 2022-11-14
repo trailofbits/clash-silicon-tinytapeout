@@ -27,22 +27,17 @@ cpu (rf, ptr, j) =
     $(bitPattern "0_nnnnn") -> (replace ptr nnnnn rf, ptr, low)
     -- literal pointer p
     $(bitPattern "100_ppp") -> (rf, ppp, low)
-    -- if R == 0,     then P == p and cjump, else decrement R
-    $(bitPattern "101_ppp") ->
-      if r == 0
-        then (rf, ppp, high)
-        else (rf, ptr, low)
     -- if R == RF[p], then P == p and cjump, else decrement R
     -- for P = p acts as unconditonal jump
-    $(bitPattern "110_ppp") ->
+    $(bitPattern "101_ppp") ->
       if r == (rf !! ppp)
         then (rf, ppp, high)
         else (rf, ptr, low)
     -- add n to R
     -- for n = 0 acts as NOP
-    $(bitPattern "1110_nn") -> (replace ptr (r + zeroExtend nn) rf, ptr, low)
+    $(bitPattern "110_.nn") -> (replace ptr (r + zeroExtend nn) rf, ptr, low)
     -- decremenet R
-    $(bitPattern "1111_..") -> (replace ptr (r - 1) rf, ptr, low)
+    $(bitPattern "111_...") -> (replace ptr (r - 1) rf, ptr, low)
     -- NOTE(jl): default case is not because this function isn't total,
     -- but instead defines what to do in the case of an undefined instruction.
     _ -> (rf, ptr, j)

@@ -15,11 +15,6 @@ def PTR_INSTR(p):
     return 0b100_000 | p
 
 
-def CJUMP_ZE_INSTR(p):
-    assert p <= 0b111
-    return 0b101_000 | p
-
-
 def CJUMP_EQ_INSTR(p):
     assert p <= 0b111
     return 0b110_000 | p
@@ -27,11 +22,11 @@ def CJUMP_EQ_INSTR(p):
 
 def ADD_INSTR(n):
     assert n <= 0b11
-    return 0b1110_00 | n
+    return 0b110_000 | n
 
 
 def DEC_INSTR():
-    return 0b111100
+    return 0b111000
 
 
 async def init(dut):
@@ -184,6 +179,7 @@ async def test_regfile_state(dut):
         assert int(dut.r.value) == p, f"read R[{i}] = {int(dut.r.value)}, not {p}"
 
 
+"""
 @cocotb.test()
 async def test_cjump_t(dut):
     await init(dut)
@@ -236,3 +232,4 @@ async def test_cjump_f(dut):
     assert int(dut.r.value) == nz, f"cjump target set: r[0] = {int(dut.r.value)} != {p}"
 
     dut._log.info(f"r[1]={nz} nonzero")
+"""
