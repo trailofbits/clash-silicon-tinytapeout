@@ -6,7 +6,27 @@ permissions:
   pages: write
   id-token: write
 jobs:
+  clash:
+    runs-on: ubuntu-latest
+    steps:
+    - name: checkout repo
+      uses: actions/checkout@v2
+
+    - uses: cachix/install-nix-action@v16
+      with:
+        nix_path: nixpkgs=channel:nixos-unstable
+
+    - name: build
+      run: nix-shell --pure --run "make"
+
+    - name: populate clash cache
+      uses: actions/cache@v3
+      with:
+        path: src
+        key: ${{ runner.os }}-clash-${{ github.run_id }}
+
   gds:
+    needs: clash
     env:
         OPENLANE_IMAGE_NAME:    efabless/openlane:2022.07.02_01.38.08
         OPENLANE_ROOT:  /home/runner/openlane
@@ -19,6 +39,13 @@ jobs:
     # need the repo checked out
     - name: checkout repo
       uses: actions/checkout@v3
+
+    - name: restore runs cache
+      uses: actions/cache@v3
+      with:
+        path: src
+        key: ${{ runner.os }}-clash-${{ github.run_id }}
+
 
     # build PDK and fetch OpenLane
 
