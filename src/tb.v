@@ -22,8 +22,7 @@ module tb( input  clk
     top top_tb( .clk(clk)
               , .rst(rst)
               , .instr(instr)
-              , .io_out(r)
-              , .cjump(cjump)
+              , .io_out({cjump, _unused, r})
               );
 
 endmodule

@@ -40,8 +40,6 @@ $ TESTCASE="test_regfile" nix-shell --run "make -C test"
 - [Matt Venn](https://mattvenn.net/)
 - Connor Northway & Eddie Zhou (feedback and rubber ducking)
 
-![](test/dril.png)
-
 # resources
 
 - [tinytapeout](https://tinytapeout.com/)

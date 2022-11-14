@@ -1,6 +1,12 @@
-.DS_Store
-.idea
-.vscode
-*.vcd
-dist-newstyle/
 configure.py
+
+dist-newstyle/
+verilog/
+
+test/__pycache__/
+test/results.xml
+test/sim_build/
+test/*.vcd
+
+src/*.hi
+src/*.o

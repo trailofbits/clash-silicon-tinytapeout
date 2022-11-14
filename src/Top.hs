@@ -4,20 +4,22 @@ import Clash.Annotations.TH
 import Clash.Prelude
 import Cpu
 
+type Port = Vec 8 Bit
+
 --
 -- construct a moore machine from the function over the cpu;
 -- 1. a function `mooreF` that maps a state and input to next state
 --      State -> Instruction -> State
 -- 2. a function `mooreO` that maps a state to an output
---      State -> (Register, CJump)
+--      State -> Port
 -- 3. an initial state
 --
 mooreF = cpu
 
-mooreO :: State -> (Register, CJump)
-mooreO (rf, ptr, j) = (rf !! ptr, j)
+mooreO :: State -> Port
+mooreO (rf, ptr, j) = j :> 0 :> 0 :> unpack (rf !! ptr)
 
-mooreM :: (HiddenClockResetEnable dom) => Signal dom Instruction -> Signal dom (Register, CJump)
+mooreM :: (HiddenClockResetEnable dom) => Signal dom Instruction -> Signal dom Port
 mooreM = moore mooreF mooreO (rf0, p0, j0)
   where
     -- initial cpu states
@@ -31,13 +33,23 @@ mooreM = moore mooreF mooreO (rf0, p0, j0)
 --
 -- circuit top-level. expose moore machine with clock and reset.
 --
-top ::
-  ("clk" ::: Clock System) ->
-  ("rst" ::: Reset System) ->
-  ("instr" ::: Signal System Instruction) ->
-  ( "io_out" ::: Signal System Register,
-    "cjump" ::: Signal System CJump
+{-# ANN
+  topEntity
+  ( Synthesize
+      { t_name = "top",
+        t_inputs =
+          [ PortName "clk",
+            PortName "rst",
+            PortName "instr"
+          ],
+        t_output =
+          PortName "io_out"
+      }
   )
-top clk rst instr = exposeClockResetEnable (unbundle $ mooreM instr) clk rst enableGen
-
-makeTopEntityWithName 'top "top"
+  #-}
+topEntity ::
+  Clock System ->
+  Reset System ->
+  Signal System Instruction ->
+  Signal System Port
+topEntity clk rst instr = exposeClockResetEnable (mooreM instr) clk rst enableGen
