@@ -41,8 +41,8 @@ cpu (rf, ptr, j) =
     -- add n to R
     -- for n = 0 acts as NOP
     $(bitPattern "1110_nn") -> (replace ptr (r + zeroExtend nn) rf, ptr, low)
-    -- subtract n from R
-    $(bitPattern "1111_nn") -> (replace ptr (r - zeroExtend nn) rf, ptr, low)
+    -- decremenet R
+    $(bitPattern "1111_..") -> (replace ptr (r - 1) rf, ptr, low)
     -- NOTE(jl): default case is not because this function isn't total,
     -- but instead defines what to do in the case of an undefined instruction.
     _ -> (rf, ptr, j)

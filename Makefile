@@ -29,5 +29,5 @@ test: $(TOP)
 .PHONY: clean
 clean:
 	$(MAKE) -C test/ clean
-	rm -rf verilog/ src/*.hi src/*.o \
+	rm -rf $(TOP) verilog/ src/*.hi src/*.o \
 		test/__pycache__ test/results.xml

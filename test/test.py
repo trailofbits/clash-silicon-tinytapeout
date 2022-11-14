@@ -30,9 +30,8 @@ def ADD_INSTR(n):
     return 0b1110_00 | n
 
 
-def SUB_INSTR(n):
-    assert n <= 0b11
-    return 0b111100 | n
+def DEC_INSTR():
+    return 0b111100
 
 
 async def init(dut):
@@ -129,19 +128,17 @@ async def test_add_zero(dut):
 
 
 @cocotb.test()
-async def test_sub_iter(dut):
+async def test_dec_iter(dut):
     await init(dut)
 
     # test incrementing by two repeatedly
     await FallingEdge(dut.clk)
-    dut.instr.value = SUB_INSTR(2)
+    dut.instr.value = DEC_INSTR()
     n = int(dut.r.value)
     await RisingEdge(dut.clk)
     iters = 100
     await ClockCycles(dut.clk, iters)
-    assert (
-        int(dut.r.value) == (n - 2 * iters) % 32
-    ), f"sub100: {n} -/-> {int(dut.r.value)}"
+    assert int(dut.r.value) == (n - iters) % 32, f"dec100: {n} -/-> {int(dut.r.value)}"
 
 
 @cocotb.test()
