@@ -17,11 +17,12 @@ module tb( input  clk
     end
     /* verilator lint_on STMTDLY */
 
+    wire [1:0] _unused;
+
     top top_tb( .clk(clk)
               , .rst(rst)
               , .instr(instr)
-              , .io_out(io_out)
-              , .cjump(cjump)
+              , .io_out({cjump, _unused, io_out})
               );
 
 endmodule

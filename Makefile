@@ -8,11 +8,9 @@ CLASH_FLAGS += $(GHC_FLAGS) -fclash-clear -fclash-error-extra -fclash-compile-ul
 # -Wno-MULTITOP:		just linting all sources; don't care about multiple top-level modules.
 VERILATOR_FLAGS += -Wall -Wno-WIDTH -Wno-MULTITOP
 
-all: $(TOP)
-
 $(TOP): $(CLASH_SRC)
 	clash $(CLASH_FLAGS) src/Top.hs --verilog
-	sed '/timescale/d' verilog/Top.top/$(TOP_MODULE).v > $@
+	sed '/timescale/d' verilog/Top.topEntity/$(TOP_MODULE).v > $@
 
 .PHONY: lint
 lint: $(TOP)

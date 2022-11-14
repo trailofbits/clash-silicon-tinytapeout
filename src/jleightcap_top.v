@@ -15,8 +15,7 @@ module jleightcap_top( input wire  [7:0] io_in
     top _top( .clk(io_in[0])
             , .rst(io_in[1])
             , .instr(io_in[7:2])
-            , .io_out(io_out[4:0])
-            , .cjump(io_out[7])
+            , .io_out(io_out)
             );
 
 endmodule
