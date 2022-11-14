@@ -1,9 +1,10 @@
-CLASH_SRC = $(wildcard src/*.hs)
 TOP_MODULE = top
 TOP = src/$(TOP_MODULE).v
 
-GHC_FLAGS += -isrc -Wall
+CLASH_SRC = $(wildcard src/*.hs)
 CLASH_FLAGS += $(GHC_FLAGS) -fclash-clear -fclash-error-extra -fclash-compile-ultra -fclash-aggressive-x-optimization
+GHC_FLAGS += -isrc -Wall
+
 # -Wno-WIDTH: 			clash-generates some verilog that doesen't pass this lint.
 # -Wno-MULTITOP:		just linting all sources; don't care about multiple top-level modules.
 VERILATOR_FLAGS += -Wall -Wno-WIDTH -Wno-MULTITOP

@@ -7,7 +7,7 @@ from cocotb.triggers import ClockCycles, FallingEdge, RisingEdge, Timer
 
 def LIT_INSTR(n):
     assert n <= 0b11111
-    return 0b000000 | n
+    return 0b0_00000 | n
 
 
 def PTR_INSTR(p):
@@ -15,17 +15,27 @@ def PTR_INSTR(p):
     return 0b100_000 | p
 
 
+def CJUMP_ZE_INSTR(p):
+    assert p <= 0b111
+    return 0b101_000 | p
+
+
+def CJUMP_EQ_INSTR(p):
+    assert p <= 0b111
+    return 0b110_000 | p
+
+
 def ADD_INSTR(n):
-    assert n <= 0b111
-    return 0b101_000 | n
+    assert n <= 0b11
+    return 0b1110_00 | n
 
 
-def SUB_INSTR(n):
-    assert n <= 0b111
-    return 0b110_000 | n
+def DEC_INSTR():
+    return 0b111100
 
 
-CJUMP_INSTR = 0b111000
+def INVERT_INSTR():
+    return
 
 
 async def init(dut):
@@ -36,8 +46,6 @@ async def init(dut):
     dut.rst.value = 1
     await ClockCycles(dut.clk, 10)
     dut.rst.value = 0
-
-    await RisingEdge(dut.clk)
 
 
 def rand_lit():
@@ -58,55 +66,56 @@ async def test_reset(dut):
     nz = 4
     dut.instr.value = LIT_INSTR(nz)
     await FallingEdge(dut.clk)
-    assert int(dut.io_out.value) == nz and nz != 0
+    assert int(dut.r.value) == nz and nz != 0
 
     # reset
     dut.rst.value = 1
     await ClockCycles(dut.clk, 10)
-    assert int(dut.io_out.value) == 0, f"not cleared {int(dut.io_out.value)}"
+    assert int(dut.r.value) == 0, f"not cleared {int(dut.r.value)}"
 
 
 @cocotb.test()
-async def test_instr_literal(dut):
+async def test_literal(dut):
     await init(dut)
 
     for LIT in rand_lit_gen():
         dut.instr.value = LIT
         await ClockCycles(dut.clk, 2)
         assert (
-            int(dut.io_out.value) == LIT
-        ), f"literal failed with {LIT} != {int(dut.io_out.value)}"
+            int(dut.r.value) == LIT
+        ), f"literal failed with {LIT} != {int(dut.r.value)}"
 
 
 @cocotb.test()
 async def test_add(dut):
     await init(dut)
 
-    for ADD_LIT in range(8):
+    for ADD_LIT in range(4):
         for LIT in rand_lit_gen():
             dut.instr.value = LIT
             await ClockCycles(dut.clk, 2)  # R <- LIT
-            assert int(dut.io_out.value) == LIT
+            assert int(dut.r.value) == LIT
             dut.instr.value = ADD_INSTR(ADD_LIT)
             await ClockCycles(dut.clk, 2)  # R <- R + ADD_LIT
             assert (
-                int(dut.io_out.value) == (LIT + ADD_LIT) % 32
-            ), f"add failed with {LIT} + {ADD_LIT} != {int(dut.io_out.value)}"
+                int(dut.r.value) == (LIT + ADD_LIT) % 32
+            ), f"add failed with {LIT} + {ADD_LIT} != {int(dut.r.value)}"
 
 
 @cocotb.test()
 async def test_add_iter(dut):
     await init(dut)
 
-    # test incrementing by one repeatedly
+    # test incrementing by two repeatedly
     await FallingEdge(dut.clk)
-    dut.instr.value = ADD_INSTR(1)
-    n = int(dut.io_out.value)
+    dut.instr.value = ADD_INSTR(2)
+    n = int(dut.r.value)
     await RisingEdge(dut.clk)
-    await ClockCycles(dut.clk, 100)
+    iters = 100
+    await ClockCycles(dut.clk, iters)
     assert (
-        int(dut.io_out.value) == n + 100 % 32
-    ), f"add100: {n} -/-> {int(dut.io_out.value)}"
+        int(dut.r.value) == (n + 2 * iters) % 32
+    ), f"add100: {n} -/-> {int(dut.r.value)}"
 
 
 @cocotb.test()
@@ -116,54 +125,26 @@ async def test_add_zero(dut):
     # test incrementing by zero repeatedly
     await FallingEdge(dut.clk)
     dut.instr.value = ADD_INSTR(0)
-    n = int(dut.io_out.value)
+    n = int(dut.r.value)
     await RisingEdge(dut.clk)
     await ClockCycles(dut.clk, 100)
-    assert int(dut.io_out.value) == n, f"add0: {n} != {int(dut.io_out.value)}"
+    assert int(dut.r.value) == n, f"add0: {n} != {int(dut.r.value)}"
 
 
 @cocotb.test()
-async def test_sub(dut):
+async def test_dec_iter(dut):
     await init(dut)
 
-    for SUB_LIT in range(8):
-        for LIT in rand_lit_gen():
-            dut.instr.value = LIT
-            await ClockCycles(dut.clk, 2)  # R <- LIT
-            assert int(dut.io_out.value) == LIT
-            dut.instr.value = SUB_INSTR(SUB_LIT)
-            await ClockCycles(dut.clk, 2)  # R <- R + SUB_LIT
-            assert (
-                int(dut.io_out.value) == (LIT - SUB_LIT) % 32
-            ), f"sub failed with {LIT} - {SUB_LIT} != {int(dut.io_out.value)}"
-
-
-@cocotb.test()
-async def test_sub_iter(dut):
-    await init(dut)
-
-    # test decrementing by one repeatedly
+    # test decrementing repeatedly
     await FallingEdge(dut.clk)
-    dut.instr.value = SUB_INSTR(1)
-    n = int(dut.io_out.value)
+    dut.instr.value = DEC_INSTR()
+    n = int(dut.r.value)
     await RisingEdge(dut.clk)
-    await ClockCycles(dut.clk, 100)
+    iters = 100
+    await ClockCycles(dut.clk, iters)
     assert (
-        int(dut.io_out.value) == (n - 100) % 32
-    ), f"sub100: {n} -/-> {int(dut.io_out.value)}"
-
-
-@cocotb.test()
-async def test_sub_zero(dut):
-    await init(dut)
-
-    # test decrementing by zero repeatedly
-    await FallingEdge(dut.clk)
-    dut.instr.value = SUB_INSTR(0)
-    n = int(dut.io_out.value)
-    await RisingEdge(dut.clk)
-    await ClockCycles(dut.clk, 100)
-    assert int(dut.io_out.value) == n, f"sub0: {n} -/-> {int(dut.io_out.value)}"
+        int(dut.r.value) == (n - iters) % 32
+    ), f"dec_iter: {n} -/-> {int(dut.r.value)}"
 
 
 @cocotb.test()
@@ -171,11 +152,11 @@ async def test_regfile_init(dut):
     await init(dut)
 
     # assert memory is zeroed initially
-    for p in range(8):
+    for p in range(16):
         await FallingEdge(dut.clk)
-        dut.instr.value = PTR_INSTR(p)
+        dut.instr.value = PTR_INSTR(p % 8)
         await ClockCycles(dut.clk, 1)
-        assert int(dut.io_out.value) == 0, f"rf[{p}] = {int(dut.io_out.value)}"
+        assert int(dut.r.value) == 0, f"rf[{p}] = {int(dut.r.value)}"
 
 
 @cocotb.test()
@@ -197,9 +178,7 @@ async def test_regfile_state(dut):
         await FallingEdge(dut.clk)
         dut.instr.value = LIT_INSTR(p)
         await FallingEdge(dut.clk)
-        assert (
-            int(dut.io_out.value) == p
-        ), f"set R[{i}] = {int(dut.io_out.value)}, not {p}"
+        assert int(dut.r.value) == p, f"set R[{i}] = {int(dut.r.value)}, not {p}"
     dut._log.info(f"wrote {list(rs)}")
 
     # read back
@@ -208,18 +187,13 @@ async def test_regfile_state(dut):
         await FallingEdge(dut.clk)
         dut.instr.value = PTR_INSTR(i)
         await FallingEdge(dut.clk)
-        assert (
-            int(dut.io_out.value) == p
-        ), f"read R[{i}] = {int(dut.io_out.value)}, not {p}"
+        assert int(dut.r.value) == p, f"read R[{i}] = {int(dut.r.value)}, not {p}"
 
 
 @cocotb.test()
 async def test_cjump_t(dut):
     await init(dut)
 
-    # set pointer to r[0]
-    await FallingEdge(dut.clk)
-    dut.instr.value = PTR_INSTR(0)
     # insert literal p
     await FallingEdge(dut.clk)
     p = rand_lit()
@@ -229,14 +203,15 @@ async def test_cjump_t(dut):
     # set pointer to r[1]
     dut.instr.value = PTR_INSTR(1)
     await FallingEdge(dut.clk)
-    assert int(dut.io_out.value) == 0
+    assert int(dut.r.value) == 0
 
-    dut.instr.value = CJUMP_INSTR
+    # r[0] == 0?
+    dut.instr.value = CJUMP_ZE_INSTR(0)
     await FallingEdge(dut.clk)
     assert (
-        int(dut.io_out.value) == p
-    ), f"cjump target unset: r[0] = {int(dut.io_out.value)} != {p}"
-    assert dut.cjump.value, "cjump not set"
+        int(dut.r.value) == p
+    ), f"cjump target unset: r[0] = {int(dut.r.value)} != {p}"
+    assert dut.cjump.value, "cjump unset when zero"
 
     dut._log.info(f"r[1] zero, jumped to {p}")
 
@@ -245,9 +220,6 @@ async def test_cjump_t(dut):
 async def test_cjump_f(dut):
     await init(dut)
 
-    # set pointer to r[0]
-    await FallingEdge(dut.clk)
-    dut.instr.value = PTR_INSTR(0)
     # insert literal p
     await FallingEdge(dut.clk)
     p = rand_lit()
@@ -257,17 +229,18 @@ async def test_cjump_f(dut):
     # set pointer to r[1]
     dut.instr.value = PTR_INSTR(1)
     await FallingEdge(dut.clk)
+
     # insert non-zero literal
     nz = 4
     dut.instr.value = LIT_INSTR(nz)
     await FallingEdge(dut.clk)
-    assert int(dut.io_out.value) == nz and nz != 0
+    assert int(dut.r.value) == nz and nz != 0
 
-    dut.instr.value = CJUMP_INSTR
+    dut.instr.value = CJUMP_ZE_INSTR(0)
     await FallingEdge(dut.clk)
-    assert not dut.cjump.value, "cjump set"
+    assert not dut.cjump.value, "cjump set when nonzero"
     assert (
-        int(dut.io_out.value) == (nz - 1) % 32
-    ), f"cjump target set: r[0] = {int(dut.io_out.value)} != {p}"
+        int(dut.r.value) == (nz - 1) % 32
+    ), f"cjump target set: r[0] = {int(dut.r.value)} != {p}"
 
-    dut._log.info(f"r[1] zero, jumped to {p}")
+    dut._log.info(f"r[1] nonzero, r[1] decremented to {p}")

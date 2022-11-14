@@ -5,7 +5,7 @@
 module tb( input  clk
          , input  rst
          , input [5:0] instr
-         , output wire [4:0] io_out
+         , output wire [4:0] r
          , output wire cjump
          );
 
@@ -17,10 +17,12 @@ module tb( input  clk
     end
     /* verilator lint_on STMTDLY */
 
+    wire [1:0] _unused;
+
     top top_tb( .clk(clk)
               , .rst(rst)
               , .instr(instr)
-              , .io_out(io_out)
+              , .io_out(r)
               , .cjump(cjump)
               );
 

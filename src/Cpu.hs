@@ -23,25 +23,31 @@ type CJump = Bit
 type State = (Regfile, Pointer, CJump)
 
 cpu :: State -> Instruction -> State
-cpu s@(rf, ptr, _) =
+cpu s@((rf, ptr, _)) =
   \case
-    -- literal value
+    -- literal value n
     $(bitPattern "0_nnnnn") -> (replace ptr nnnnn rf, ptr, low)
-    -- literal pointer
+    -- literal pointer p
     $(bitPattern "100_ppp") -> (rf, ppp, low)
-    -- add literal value R
-    $(bitPattern "101_nnn") -> (replace ptr (r + zeroExtend nnn) rf, ptr, low)
-    -- subtract literal value R
-    $(bitPattern "110_nnn") -> (replace ptr (r - zeroExtend nnn) rf, ptr, low)
-    -- if R == 0, then P == 0 and cjump, else decrement R
-    $(bitPattern "11100.") -> if r == 0 then (rf, 0, high) else (replace ptr (r - 1) rf, ptr, low)
+    -- if R == 0,     then P == p and cjump, else decrement R
+    $(bitPattern "101_ppp") -> if r == 0 then (rf, ppp, high) else (replace ptr (r - 1) rf, ptr, low)
+    -- if R == RF[p], then P == p and cjump, else decrement R
+    -- for P = p acts as unconditonal jump
+    $(bitPattern "110_ppp") -> if r == (rf !! ppp) then (rf, ppp, high) else (replace ptr (r - 1) rf, ptr, low)
+    -- add n to R
+    -- for n = 0 acts as NOP
+    $(bitPattern "1110_nn") -> (replace ptr (r + zeroExtend nn) rf, ptr, low)
+    -- decrement R
+    $(bitPattern "111100") -> (replace ptr (r - 1) rf, ptr, low)
     -- bitwise complement R
-    $(bitPattern "11101.") -> (replace ptr (complement r) rf, ptr, low)
+    $(bitPattern "111101") -> (replace ptr (complement r) rf, ptr, low)
     -- left shift R
-    $(bitPattern "11110.") -> (replace ptr (r `shiftL` 1) rf, ptr, low)
+    $(bitPattern "111110") -> (replace ptr (r `shiftL` 1) rf, ptr, low)
     -- right shift R
-    $(bitPattern "11111.") -> (replace ptr (r `shiftR` 1) rf, ptr, low)
-    _ -> undefined
+    $(bitPattern "111111") -> (replace ptr (r `shiftR` 1) rf, ptr, low)
+    -- NOTE(jl): default case is not because this function isn't total,
+    -- but instead defines what to do in the case of an undefined instruction.
+    _ -> s
   where
     r :: Register
     r = rf !! ptr
