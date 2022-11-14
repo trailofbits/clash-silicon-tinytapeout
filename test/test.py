@@ -50,6 +50,23 @@ def rand_lit_gen(n=20):
 
 
 @cocotb.test()
+async def test_reset(dut):
+    await init(dut)
+
+    # insert non-zero literal
+    await FallingEdge(dut.clk)
+    nz = 4
+    dut.instr.value = LIT_INSTR(nz)
+    await FallingEdge(dut.clk)
+    assert int(dut.io_out.value) == nz and nz != 0
+
+    # reset
+    dut.rst.value = 1
+    await ClockCycles(dut.clk, 10)
+    assert int(dut.io_out.value) == 0, f"not cleared {int(dut.io_out.value)}"
+
+
+@cocotb.test()
 async def test_instr_literal(dut):
     await init(dut)
 
@@ -244,7 +261,7 @@ async def test_cjump_f(dut):
     nz = 4
     dut.instr.value = LIT_INSTR(nz)
     await FallingEdge(dut.clk)
-    assert int(dut.io_out.value) == nz
+    assert int(dut.io_out.value) == nz and nz != 0
 
     dut.instr.value = CJUMP_INSTR
     await FallingEdge(dut.clk)
