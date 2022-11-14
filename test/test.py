@@ -25,6 +25,9 @@ def SUB_INSTR(n):
     return 0b110_000 | n
 
 
+CJUMP_INSTR = 0b111000
+
+
 async def init(dut):
     clock = Clock(dut.clk, period=2, units="us")
     cocotb.start_soon(clock.start())
@@ -191,3 +194,63 @@ async def test_regfile_state(dut):
         assert (
             int(dut.io_out.value) == p
         ), f"read R[{i}] = {int(dut.io_out.value)}, not {p}"
+
+
+@cocotb.test()
+async def test_cjump_t(dut):
+    await init(dut)
+
+    # set pointer to r[0]
+    await FallingEdge(dut.clk)
+    dut.instr.value = PTR_INSTR(0)
+    # insert literal p
+    await FallingEdge(dut.clk)
+    p = rand_lit()
+    dut.instr.value = LIT_INSTR(p)
+    await FallingEdge(dut.clk)
+
+    # set pointer to r[1]
+    dut.instr.value = PTR_INSTR(1)
+    await FallingEdge(dut.clk)
+    assert int(dut.io_out.value) == 0
+
+    dut.instr.value = CJUMP_INSTR
+    await FallingEdge(dut.clk)
+    assert (
+        int(dut.io_out.value) == p
+    ), f"cjump target unset: r[0] = {int(dut.io_out.value)} != {p}"
+    assert dut.cjump.value, "cjump not set"
+
+    dut._log.info(f"r[1] zero, jumped to {p}")
+
+
+@cocotb.test()
+async def test_cjump_f(dut):
+    await init(dut)
+
+    # set pointer to r[0]
+    await FallingEdge(dut.clk)
+    dut.instr.value = PTR_INSTR(0)
+    # insert literal p
+    await FallingEdge(dut.clk)
+    p = rand_lit()
+    dut.instr.value = LIT_INSTR(p)
+    await FallingEdge(dut.clk)
+
+    # set pointer to r[1]
+    dut.instr.value = PTR_INSTR(1)
+    await FallingEdge(dut.clk)
+    # insert non-zero literal
+    nz = 4
+    dut.instr.value = LIT_INSTR(nz)
+    await FallingEdge(dut.clk)
+    assert int(dut.io_out.value) == nz
+
+    dut.instr.value = CJUMP_INSTR
+    await FallingEdge(dut.clk)
+    assert not dut.cjump.value, "cjump set"
+    assert (
+        int(dut.io_out.value) == (nz - 1) % 32
+    ), f"cjump target set: r[0] = {int(dut.io_out.value)} != {p}"
+
+    dut._log.info(f"r[1] zero, jumped to {p}")

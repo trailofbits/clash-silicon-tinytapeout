@@ -68,8 +68,6 @@ module top
   reg [4:0] c$case_alt_51;
   reg [4:0] c$case_alt_52;
   wire [4:0] c$case_alt_53;
-  // src/Cpu.hs:26:1-3
-  wire  j;
   reg [4:0] c$case_alt_54;
   reg [4:0] c$case_alt_55;
   reg [4:0] c$case_alt_56;
@@ -102,7 +100,7 @@ module top
   // src/Top.hs:18:1-6
   wire [2:0] ptr_0;
   // src/Top.hs:18:1-6
-  wire  j_0;
+  wire  j;
   // src/Top.hs:20:1-96
   reg [43:0] s1 = {{5'b00000,   5'b00000,   5'b00000,   5'b00000,   5'b00000,   5'b00000,
   5'b00000,   5'b00000},   3'b000,   1'b0};
@@ -234,7 +232,7 @@ module top
       6'b000000 : result_0 = {{c$case_alt_6,
                                c$case_alt_5,   c$case_alt_4,   c$case_alt_3,
                                c$case_alt_2,   c$case_alt_1,   c$case_alt_0,
-                               c$case_alt},   ptr,   j};
+                               c$case_alt},   ptr,   1'b0};
       default : result_0 = result_1;
     endcase
   end
@@ -332,17 +330,17 @@ module top
   always @(*) begin
     case(result_selection_res_0)
       6'b100000 : result_1 = {rf,
-                              c$cpu_$j_$j1Out,   j};
+                              c$cpu_$j_$j1Out,   1'b0};
       6'b101000 : result_1 = {{c$case_alt_24,
                                c$case_alt_23,   c$case_alt_22,
                                c$case_alt_21,   c$case_alt_20,
                                c$case_alt_19,   c$case_alt_18,
-                               c$case_alt_17},   ptr,   j};
+                               c$case_alt_17},   ptr,   1'b0};
       6'b110000 : result_1 = {{c$case_alt_15,
                                c$case_alt_14,   c$case_alt_13,
                                c$case_alt_12,   c$case_alt_11,
                                c$case_alt_10,   c$case_alt_9,
-                               c$case_alt_8},   ptr,   j};
+                               c$case_alt_8},   ptr,   1'b0};
       default : result_1 = c$case_alt_7;
     endcase
   end
@@ -351,23 +349,22 @@ module top
 
   always @(*) begin
     case(c$case_alt_selection_res)
-      6'b111000 : c$case_alt_7 = c$case_alt_26;
       6'b111010 : c$case_alt_7 = {{c$case_alt_52,
                                    c$case_alt_51,   c$case_alt_50,
                                    c$case_alt_49,   c$case_alt_48,
                                    c$case_alt_47,   c$case_alt_46,
-                                   c$case_alt_45},   ptr,   j};
+                                   c$case_alt_45},   ptr,   1'b0};
       6'b111100 : c$case_alt_7 = {{c$case_alt_43,
                                    c$case_alt_42,   c$case_alt_41,
                                    c$case_alt_40,   c$case_alt_39,
                                    c$case_alt_38,   c$case_alt_37,
-                                   c$case_alt_36},   ptr,   j};
+                                   c$case_alt_36},   ptr,   1'b0};
       6'b111110 : c$case_alt_7 = {{c$case_alt_34,
                                    c$case_alt_33,   c$case_alt_32,
                                    c$case_alt_31,   c$case_alt_30,
                                    c$case_alt_29,   c$case_alt_28,
-                                   c$case_alt_27},   ptr,   j};
-      default : c$case_alt_7 = s1;
+                                   c$case_alt_27},   ptr,   1'b0};
+      default : c$case_alt_7 = c$case_alt_26;
     endcase
   end
 
@@ -559,7 +556,7 @@ module top
                                   c$case_alt_60,   c$case_alt_59,
                                   c$case_alt_58,   c$case_alt_57,
                                   c$case_alt_56,   c$case_alt_55,
-                                  c$case_alt_54},   ptr,   j};
+                                  c$case_alt_54},   ptr,   1'b0};
     endcase
   end
 
@@ -833,8 +830,6 @@ module top
 
   assign c$case_alt_53 = ~ c$r_case_alt;
 
-  assign j = s1[0:0];
-
   assign c$case_alt_selection_147 = c$case_alt_selection_146;
 
   assign c$case_alt_selection_146 = $unsigned({{(64-3) {1'b0}},ptr});
@@ -989,7 +984,7 @@ module top
 
   assign ptr_0 = s1[3:1];
 
-  assign j_0 = s1[0:0];
+  assign j = s1[0:0];
 
   // register begin
   always @(posedge clk or  posedge  rst) begin : s1_register
@@ -1002,7 +997,7 @@ module top
   end
   // register end
 
-  assign result = {c$case_alt_63,   j_0};
+  assign result = {c$case_alt_63,   j};
 
   assign io_out = result[5:1];
 
