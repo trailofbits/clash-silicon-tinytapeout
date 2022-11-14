@@ -4,6 +4,27 @@
 
 a (very small) synthesized cpu written in [clash](https://clash-lang.org/).
 
+[interactive viewer](https://jleightcap.github.io/clash-silicon-tinytapeout/)
+
+# cpu description
+
+a small minsky-like register machine consisting of
+
+- register file (`rf`): 8× 5-bit register
+- register file pointer (`ptr`): 3-bit pointer into register file
+- cjump: 1-bit conditional branch taken
+
+the register `R` is the contents of the `rf[ptr]`.
+
+| encoding | meaning |
+| -------- | ------- |
+| `0_nnnnn` | `R` ← 5-bit literal `n` |
+| `100_ppp` | `ptr` ← 3-bit literal `p` |
+| `101_ppp` | if `R == 0` then `ptr` ← 3-bit literal `p` else NOP |
+| `1100_nn` | `R` ← `R` + 2-bit literal `n` |
+| `1101_nn` | `R` ← `R` - 2-bit literal `n` |
+| ... | ... |
+
 # building
 
 ```sh
