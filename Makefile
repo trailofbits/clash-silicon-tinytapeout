@@ -23,11 +23,11 @@ lint: $(TOP)
 
 .PHONY: test
 test: $(TOP)
-	runghc $(GHC_FLAGS) src/Test.hs
+	runghc $(GHC_FLAGS) test/Test.hs
 	$(MAKE) -C test/ && ! grep failure test/results.xml
 
 .PHONY: clean
 clean:
 	$(MAKE) -C test/ clean
 	rm -rf $(TOP) verilog/ src/*.hi src/*.o \
-		test/__pycache__ test/results.xml
+		test/__pycache__ test/results.xml runs/
